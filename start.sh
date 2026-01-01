@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # создаем сессию, если ее нет
-if [ ! -f /app/ig_session.json ]; then
+if [ ! -f /sessions/ig_session.json ]; then
     echo "Creating Instagram session..."
     python create_session.py
 fi
