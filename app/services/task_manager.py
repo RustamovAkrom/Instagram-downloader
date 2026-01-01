@@ -22,6 +22,9 @@ def _run_task(task_id: str, func, *args, **kwargs):
     try:
         result = func(*args, **kwargs)
         return result
+    except Exception as e:
+        logger.exception("Task %s failed: %s", task_id, e)
+        raise
     finally:
         # После завершения проверяем очередь
         if not task_queue.empty():
