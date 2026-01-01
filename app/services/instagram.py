@@ -28,11 +28,11 @@ class InstagramService:
                     filename=str(settings.SESSION_FILE)
                 )
                 print("Session loaded successfully.")
-                return
-            self.loader.login(settings.IG_USERNAME, settings.IG_PASSWORD)
-            self.loader.save_session_to_file(
-                filename=str(settings.SESSION_FILE)
-            )
+            else:
+                self.loader.login(settings.IG_USERNAME, settings.IG_PASSWORD)
+                self.loader.save_session_to_file(
+                    filename=str(settings.SESSION_FILE)
+                )
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"Instagram login failed: {str(e)}")
         
