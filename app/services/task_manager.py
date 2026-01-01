@@ -8,7 +8,7 @@ from queue import Queue
 logger = logging.getLogger("task_manager")
 logger.setLevel(logging.INFO)
 
-MAX_WORKERS = 3  # одновременно не больше 3 задач
+MAX_WORKERS = 1  # одновременно не больше 3 задач
 executor = ThreadPoolExecutor(max_workers=MAX_WORKERS)
 tasks: dict[str, Future] = {}
 lock = threading.Lock()
