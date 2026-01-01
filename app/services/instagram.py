@@ -17,16 +17,25 @@ class InstagramService:
             download_video_thumbnails=False,
             quiet=True,
         )
-
+        settings.SESSION_DIR.mkdir(parents=True, exist_ok=True)
         self._login()
     
     def _login(self):
         try:
-            self.loader.load_session_from_file(settings.IG_USERNAME)
-        except:
+            if os.path.exists(settings.SESSION_FILE):
+                self.loader.load_session_from_file(
+                    settings.IG_USERNAME,
+                    filename=str(settings.SESSION_FILE)
+                )
+                print("Session loaded successfully.")
+                return
             self.loader.login(settings.IG_USERNAME, settings.IG_PASSWORD)
-            self.loader.save_session_to_file()
-
+            self.loader.save_session_to_file(
+                filename=str(settings.SESSION_FILE)
+            )
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Instagram login failed: {str(e)}")
+        
     def download_post(self, shortcode: str):
         try:
             shortcode = extract_shortcode(shortcode)
@@ -50,9 +59,6 @@ class InstagramService:
             if not media:
                 raise HTTPException(status_code=404, detail="No media found in this post")
             
-
-            # self.loader.download_post(post, target=shortcode)
-            # return os.path.join(settings.DOWNLOAD_DIR, shortcode)
             return {
                 "username": post.owner_username,
                 "status": "success",
