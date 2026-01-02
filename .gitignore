@@ -12,3 +12,4 @@ wheels/
 downloads/
 .vercel
 .env*.local
+local_create_session.py
